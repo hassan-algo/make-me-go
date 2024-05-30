@@ -46,19 +46,19 @@ func (b *${1}Business) GETBYID(data interface{}) (interface{}, error) {
 	return ${a}, nil
 }
 func (b *${1}Business) POST(data interface{}) (interface{}, error) {
-		${a}, _ := data.(structs.${1})
+	${a}, _ := data.(structs.${1})
 	return ${a}, nil
 }
 func (b *${1}Business) MULTIPOST(data interface{}) (interface{}, error) {
-		${a}, _ := data.(structs.${1})
+	${a}, _ := data.(structs.${1})
 	return ${a}, nil
 }
 func (b *${1}Business) PUT(data interface{}) (interface{}, error) {
-		${a}, _ := data.(structs.${1})
+	${a}, _ := data.(structs.${1})
 	return ${a}, nil
 }
 func (b *${1}Business) DELETE(data interface{}) (interface{}, error) {
-		${a}, _ := data.(structs.${1})
+	${a}, _ := data.(structs.${1})
 	return ${a}, nil
 }
 EOF
@@ -71,6 +71,7 @@ import (
 	"net/http"
 
 	"example.com/apis"
+	"example.com/structs"
 	"github.com/labstack/echo/v4"
 )
 
@@ -94,29 +95,70 @@ func (h *${1}Handlers) Connect(business apis.APIBusiness) error {
 // @Router /${a} [get]
 // @Security ApiKeyAuth
 // @Tags ${a}
-func (p *${1}Handlers) GET(ctx echo.Context) error {
-	return ctx.JSON(http.StatusOK, "GET $1")
+func (h *${1}Handlers) GET(ctx echo.Context) error {
+	return ctx.JSON(http.StatusOK, structs.Response{Message: "Get ${1}", Valid: true, Data: nil})
 }
 
-func (p *${1}Handlers) POST(ctx echo.Context) error {
-	return ctx.String(http.StatusOK, "POST $1")
+// @Summary Post ${a}
+// @Description
+// @Produce json
+// @Param  product body structs.${1} true "Post ${a}"
+// @Success 200 {object} structs.Response
+// @Router /${a} [post]
+// @Security ApiKeyAuth
+// @Tags ${a}
+func (h *${1}Handlers) POST(ctx echo.Context) error {
+	return ctx.JSON(http.StatusOK, structs.Response{Message: "Post ${1}", Valid: true, Data: nil})
 }
 
-func (p *${1}Handlers) PUT(ctx echo.Context) error {
-	return ctx.String(http.StatusOK, "PUT $1")
-}
-func (p *${1}Handlers) DELETE(ctx echo.Context) error {
-	return ctx.String(http.StatusOK, "DELETE $1")
+// @Summary Put ${a}
+// @Description
+// @Produce json
+// @Param  product body structs.${1} true "Put ${a}"
+// @Success 200 {object} structs.Response
+// @Router /${a} [put]
+// @Security ApiKeyAuth
+// @Tags ${a}
+func (h *${1}Handlers) PUT(ctx echo.Context) error {
+	return ctx.JSON(http.StatusOK, structs.Response{Message: "Put ${1}", Valid: true, Data: nil})
 }
 
-func (p *${1}Handlers) GETBYID(ctx echo.Context) error {
-	
-	return ctx.JSON(http.StatusOK, "GETBYID $1")
+// @Summary Delete ${a}
+// @Description
+// @Produce json
+// @Param  product body structs.${1} true "Delete ${a}"
+// @Success 200 {object} structs.Response
+// @Router /${a} [delete]
+// @Security ApiKeyAuth
+// @Tags ${a}
+func (h *${1}Handlers) DELETE(ctx echo.Context) error {
+	return ctx.JSON(http.StatusOK, structs.Response{Message: "Delete ${1}", Valid: true, Data: nil})
 }
 
-func (p *${1}Handlers) MULTIPOST(ctx echo.Context) error {
-	return ctx.String(http.StatusOK, "MULTIPOST $1")
+// @Summary Get ${a} by id
+// @Description
+// @Produce json
+// @Param id path string true "id"
+// @Success 200 {object} structs.${1} "${a}"
+// @Router /${a}/{id} [get]
+// @Security ApiKeyAuth
+// @Tags ${a}
+func (h *${1}Handlers) GETBYID(ctx echo.Context) error {
+	return ctx.JSON(http.StatusOK, structs.Response{Message: "Get ${a} by id", Valid: true, Data: nil})
 }
+
+// @Summary Multipost ${a}
+// @Description
+// @Produce json
+// @Param  product body structs.${1}s true "Multipost ${a}"
+// @Success 200 {object} structs.Response
+// @Router /${a}/multi [post]
+// @Security ApiKeyAuth
+// @Tags ${a}
+func (h *${1}Handlers) MULTIPOST(ctx echo.Context) error {
+	return ctx.JSON(http.StatusOK, structs.Response{Message: "Multipost ${1}", Valid: true, Data: nil})
+}
+
 EOF
 
 
@@ -136,7 +178,7 @@ func New${1}Routes() *${1}Routes {
 }
 
 func (r *${1}Routes) Connect(endPoint string, ${a}Handler apis.APIHandler, echo *echo.Echo, auth apis.AuthHandler) error {
-
+	// echo.GET(endPoint, auth.Authenticate(${a}Handler.GET)) // to authenticate the user
 	echo.GET(endPoint, ${a}Handler.GET)
 	echo.POST(endPoint, ${a}Handler.POST)
 	echo.PUT(endPoint, ${a}Handler.PUT)
@@ -163,7 +205,7 @@ type ${1} struct {
 
 EOF
 
-
+swag init
 
 echo "Copy these lines in your main.go file"
 
